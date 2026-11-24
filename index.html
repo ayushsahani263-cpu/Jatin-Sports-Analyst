@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071711">
+  <meta name="description" content="Jatin Sports Analyst — cricket analysis, match updates, news and match reports.">
+  <title>JATIN SPORTS ANALYST (CEO)</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f4fff8;
+      --muted: #a9c0b3;
+      --green: #74f0aa;
+      --lime: #e8f26a;
+      --panel: rgba(5, 20, 17, .88);
+      --line: rgba(210, 255, 226, .17);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { min-height: 100%; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 16px;
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 105%, rgba(27, 143, 78, .36), transparent 48%),
+        linear-gradient(180deg, rgba(2, 13, 11, .40), rgba(2, 10, 9, .96)),
+        #071711;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    /* Stadium-inspired lights and field, drawn in CSS so no image files are needed. */
+    .stadium-scene {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 8% 12%, rgba(224, 255, 240, .23), transparent 16%),
+        radial-gradient(ellipse at 92% 12%, rgba(224, 255, 240, .23), transparent 16%),
+        radial-gradient(ellipse at 50% 75%, rgba(38, 138, 76, .19), transparent 42%);
+    }
+
+    .stadium-scene::before {
+      content: "";
+      position: absolute;
+      left: -20%;
+      right: -20%;
+      bottom: -32%;
+      height: 62%;
+      border: 1px solid rgba(151, 255, 185, .17);
+      border-radius: 50% 50% 0 0;
+      background: repeating-radial-gradient(ellipse at 50% 0%, transparent 0 34px, rgba(151, 255, 185, .045) 35px 36px);
+      transform: perspective(320px) rotateX(18deg);
+    }
+
+    .stadium-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,.26), transparent 28%, transparent 72%, rgba(0,0,0,.26));
+    }
+
+    .page-shell {
+      width: min(100%, 690px);
+    }
+
+    .card {
+      position: relative;
+      isolation: isolate;
+      padding: clamp(28px, 6vw, 54px);
+      overflow: hidden;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(145deg, rgba(13, 42, 31, .94), var(--panel) 72%);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .55), 0 0 55px rgba(69, 236, 139, .08);
+      backdrop-filter: blur(13px);
+      -webkit-backdrop-filter: blur(13px);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 280px;
+      height: 280px;
+      top: -190px;
+      left: calc(50% - 140px);
+      border-radius: 50%;
+      background: rgba(91, 242, 153, .16);
+      filter: blur(35px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 20px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before,
+    .eyebrow::after {
+      content: "";
+      width: 22px;
+      height: 1px;
+      background: currentColor;
+      opacity: .7;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(31px, 7vw, 48px);
+      line-height: 1.06;
+      letter-spacing: -.045em;
+      font-weight: 950;
+      text-wrap: balance;
+      text-shadow: 0 4px 28px rgba(71, 238, 145, .16);
+    }
+
+    h1 .brand-accent { color: var(--green); }
+
+    .role {
+      margin: 12px 0 28px;
+      color: var(--lime);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .36em;
+    }
+
+    .tagline {
+      margin: 0 auto 28px;
+      max-width: 550px;
+      padding: 17px 18px;
+      border: 1px solid rgba(245, 255, 139, .55);
+      border-radius: 14px;
+      color: #14200b;
+      background: linear-gradient(105deg, #dbe94e, #f4ff9b 52%, #d2e747);
+      box-shadow: 0 8px 28px rgba(220, 238, 77, .13);
+      font-size: clamp(15px, 3.4vw, 19px);
+      font-weight: 850;
+      line-height: 1.45;
+    }
+
+    .section-label {
+      margin: 0 0 9px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    .timer {
+      margin: 0 0 25px;
+      color: #dcebe2;
+      font-size: 17px;
+      font-weight: 650;
+    }
+
+    #countdown {
+      display: inline-block;
+      min-width: 46px;
+      margin-left: 5px;
+      color: var(--green);
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+    }
+
+    .join-button {
+      display: flex;
+      min-height: 76px;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid rgba(255, 255, 255, .88);
+      border-radius: 19px;
+      color: #fff;
+      background: linear-gradient(180deg, #ed4a25, #a91e12);
+      box-shadow: 0 10px 30px rgba(218, 55, 29, .27), inset 0 1px rgba(255,255,255,.25);
+      font-size: clamp(15px, 3.2vw, 19px);
+      font-weight: 900;
+      letter-spacing: .015em;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+
+    .join-button:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.08);
+      box-shadow: 0 14px 38px rgba(218, 55, 29, .38), 0 0 25px rgba(255,255,255,.10);
+    }
+
+    .join-button:focus-visible {
+      outline: 3px solid var(--lime);
+      outline-offset: 5px;
+    }
+
+    .telegram-mark {
+      display: grid;
+      flex: 0 0 39px;
+      width: 39px;
+      height: 39px;
+      place-items: center;
+      border-radius: 50%;
+      color: #b92b1c;
+      background: #fff;
+    }
+
+    .telegram-mark svg { width: 22px; height: 22px; }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 24px;
+    }
+
+    .feature {
+      padding: 9px 12px;
+      border: 1px solid rgba(210, 255, 226, .14);
+      border-radius: 999px;
+      color: #d4e5d9;
+      background: rgba(255,255,255,.045);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .disclaimer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px dashed rgba(190, 226, 201, .24);
+      color: #9eb4a7;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .agency {
+      margin: 22px 0 0;
+      color: #dcebe2;
+      font-size: 13px;
+    }
+
+    .agency strong {
+      color: #83baff;
+      font-weight: 800;
+    }
+
+    @media (max-width: 420px) {
+      body { padding: 18px 12px; }
+      .card { border-radius: 23px; }
+      .join-button { min-height: 70px; gap: 9px; padding-inline: 12px; }
+      .feature { font-size: 11px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stadium-scene" aria-hidden="true"></div>
+
+  <main class="page-shell">
+    <section class="card" aria-labelledby="brand-title">
+      <div class="eyebrow">Cricket analysis</div>
+
+      <h1 id="brand-title">JATIN SPORTS<br><span class="brand-accent">ANALYST</span></h1>
+      <p class="role">( CEO )</p>
+
+      <p class="tagline">Cricket Analysis · Match Updates · Expert Insights</p>
+
+      <p class="section-label">Your daily cricket update</p>
+      <p class="timer">Next update in <span id="countdown" aria-live="polite">00:30</span></p>
+
+      <!-- Your updated Telegram invite link is connected to this button. -->
+      <a
+        class="join-button"
+        href="https://t.me/+2R7pPvDKJDUwYWE1"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Join Jatin Sports Analyst on Telegram"
+      >
+        <span>JOIN TELEGRAM FOR UPDATES</span>
+        <span class="telegram-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 3L3.8 9.65c-1.18.46-1.17 1.1-.22 1.39l4.42 1.38 1.7 5.24c.21.58.1.81.7.81.46 0 .67-.21.93-.46l2.14-2.08 4.45 3.28c.82.45 1.41.21 1.62-.76L22.46 4.5C22.77 3.27 22.03 2.72 21 3ZM9.03 12.11l9.1-5.74c.45-.27.86-.12.52.18l-7.52 6.79-.29 3.1-1.81-4.33Z" fill="currentColor"/>
+          </svg>
+        </span>
+      </a>
+
+      <div class="features" aria-label="Channel topics">
+        <span class="feature">🏏 Match Analysis</span>
+        <span class="feature">📊 Cricket Updates</span>
+        <span class="feature">🏆 Match Reports</span>
+      </div>
+
+      <p class="disclaimer">
+        Disclaimer: This page shares cricket news, analysis and general information for fans.
+        It does not promote betting or gambling. Match outcomes are uncertain; please verify
+        information independently.
+      </p>
+
+      <p class="agency">Ads by <strong>Ayush Ads Agency</strong></p>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const display = document.getElementById('countdown');
+      let secondsRemaining = 30;
+
+      function renderCountdown() {
+        if (secondsRemaining <= 0) {
+          display.textContent = 'Check Telegram';
+          return;
+        }
+
+        const minutes = String(Math.floor(secondsRemaining / 60)).padStart(2, '0');
+        const seconds = String(secondsRemaining % 60).padStart(2, '0');
+        display.textContent = `${minutes}:${seconds}`;
+        secondsRemaining -= 1;
+        window.setTimeout(renderCountdown, 1000);
+      }
+
+      renderCountdown();
+    })();
+  </script>
+</body>
+</html>
